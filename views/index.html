@@ -1,0 +1,173 @@
+{% extends 'layout.html' %}
+{% block css %}
+<style>
+
+</style>
+{% endblock %}
+{% block js %}
+<script src="/repsys/public/js/scene.js"></script>
+{% endblock %}
+{% block content %}
+<div id="indexPanel">
+<section class="content-header">
+    <ol class="breadcrumb clearfix">
+        <li><a href="javascript:;"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="javascript:;">风险命中统计</a></li>
+    </ol>
+</section>
+<section data-tag="content" class="content">
+  <div class="box box-primary">
+      <div class="box-header with-border">
+      <h3 class="box-title">风险命中统计</h3>
+      </div>
+      <div class="box-body">
+        <div class="btn_wrap">
+          <label for="startTime">开始时间：</label><input id="startTime" type="text" class="datepicker" value="2016-09-01">
+          <label for="endTime">结束时间：</label><input id="endTime" type="text" class="datepicker" value="2016-09-06">
+          <label for="scene">场景：</label><select name="scene" id="scene">
+            <option value="" selected="selected">全部</option>
+            <option value="0">活动</option>
+            <option value="1">秒杀</option>
+            <option value="2">订单</option>
+          </select>
+          &nbsp;
+          <button id="search" class="btn btn-primary">查 找</button>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <button data-tag="chart" class="btn btn-primary">显示图表</button>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <button data-hash="detail" class="btn btn-primary">查看命中高风险明细</button>
+        </div>
+        <div class="table_wrap" id="tbWrap"></div>
+      </div>
+      <div class="box-footer"></div>
+  </div>
+</section>
+</div>
+<div id="detailPanel" style="display:none;">
+<section class="content-header">
+    <ol class="breadcrumb clearfix">
+        <li><a href="javascript:;"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#index">风险命中统计</a></li>
+        <li><a href="javascript:;" data-tag="detail">命中高风险总数</a></li>
+    </ol>
+</section>
+<section data-tag="content" class="content">
+  <div class="box box-primary">
+    <div class="box-header with-border">
+    <h3 class="box-title">命中高风险总数明细 (场景：<span id="sceneName"></span>)</h3>
+    </div>
+    <div class="box-body">
+      <div class="btn_wrap">
+        <button data-tag="chart" class="btn btn-primary">显示图表</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button data-hash="index" class="btn btn-primary">返回上级</button>
+      </div>
+      <fieldset>
+        <legend>字段筛选</legend>
+        <div id="fields"></div>
+      </fieldset>
+      <div class="table_wrap" id="tbWrap2"></div>
+    </div>
+    <div class="box-footer"></div></div>
+</section>
+</div>
+<div id="dayPanel" style="display:none;">
+<section class="content-header">
+    <ol class="breadcrumb clearfix">
+        <li><a href="javascript:;"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#index">风险命中统计</a></li>
+        <li><a href="javascript:;" data-tag="detail">数据按天统计</a></li>
+    </ol>
+</section>
+<section data-tag="content" class="content">
+  <div class="box box-primary">
+    <div class="box-header with-border">
+    <h3 class="box-title">数据按天统计</h3>
+    </div>
+    <div class="box-body">
+      <div class="btn_wrap">
+        <button data-tag="chart" class="btn btn-primary">显示图表</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button data-hash="index" class="btn btn-primary">返回上级</button>
+      </div>
+      <div class="table_wrap" id="tbWrap3"></div>
+    </div>
+    <div class="box-footer"></div></div>
+</section>
+</div>
+<script id="masterTbTpl" type="text/html">
+<table class="table table-bordered table-striped">
+  <thead>
+  <tr>
+    <% var p;for(p in list[0]){ %>
+      <%if(!desc(p)){continue;}%>
+      <td><%=desc(p)%></td>
+    <%}%>
+  </tr>
+  </thead>
+  <tbody>
+  <%for(var i=0,len=list.length;i<len;i++){var item=list[i];%>
+    <tr>
+      <!-- <td><%=timeFormat(item.dan_time)%>&nbsp;&nbsp;<a href="javascript:;" data-hash="day|<%=item.dan_time%>">查看详细</a></td> -->
+      <td><%=timeFormat(item.dan_time)%></td>
+    <% var p;for(p in list[0]){ %>
+    <% if(p=='dan_time'){continue;}%>
+    <% if(!desc(p)){continue;}%>
+    <% if(p=='scene_id'){ %>
+      <td><%=scene(item[p])%></td>
+    <% continue;}%>
+      <td><%=item[p]%><%=p.search('percent')>-1?'%':''%></td>
+    <%}%>
+    </tr>
+  <%}%>
+  </tbody>
+</table>
+</script>
+<script id="detailTbTpl" type="text/html">
+<% if(list.length){ %>
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+    <td>时间</td>
+    <td>命中高风险总数</td>
+    <% var p;for(p in fields){ %>
+      <% if(!fields[p]){continue;} %>
+      <td><%=desc(p) %></td>
+    <%}%>
+    </tr>
+  </thead>
+  <tbody>
+  <%for(var i=0,len=list.length;i<len;i++){var item=list[i];%>
+    <tr>
+      <td><%=timeFormat(item.dan_time)%></td>
+      <td><%=item.dan_check_H_total%></td>
+      <% var p;for(p in fields){ %>
+        <% if(!fields[p]){continue;} %>
+        <td><%=item[p]||''%></td>
+      <%}%>
+    </tr>
+  <%}%>
+  </tbody>
+</table>
+<%}%>
+</script>
+<script id="fieldTpl" type="text/html">
+<!--     <label for="fieldAll"> 全部：</label>
+    <input type="checkbox" name="fieldAll" id="fieldAll"> -->
+<table>
+    <% var index=0; var p;for(p in item){ %>
+      <%if(p=='dan_check_H_total'||p=='dan_time'){continue;}%>
+      <% if(index%6==0){ %>
+          <tr>
+      <% } %>
+      <td>
+        <input type="checkbox" name="<%=p%>" id="<%=p%>">
+        <label for="<%=p%>"><%=desc(p)%></label>
+      </td>
+      <% if(index%6==5){ %>
+          </tr>
+      <% } %>
+    <% index++;} %>
+</table>
+</script>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'layout.html' %}
+{% block js %}
+<script src="/repsys/public/js/statis.js"></script>
+{% endblock %}
+{% block content %}
+<section class="content-header">
+    <ol class="breadcrumb clearfix">
+        <li><a href="javascript:;"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="javascript:;">风险打标统计</a></li>
+    </ol>
+</section>
+<section class="content">
+  <div class="box box-primary">
+    <div class="box-header with-border">
+    <h3 class="box-title">风险打标统计</h3>
+    </div>
+    <div class="box-body">
+      <div class="box-body">
+        <div class="btn_wrap">
+          <label for="startTime">开始时间：</label><input id="startTime" type="text" class="datepicker" value="2016-09-01">
+          <label for="endTime">结束时间：</label><input id="endTime" type="text" class="datepicker" value="2016-09-06">
+          &nbsp;
+          <button id="search" class="btn btn-primary">查 找</button>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <button id="chart" class="btn btn-primary">显示图表</button>
+        </div>
+      <fieldset>
+        <legend>字段筛选</legend>
+        <div id="fields"></div>
+      </fieldset>
+        <div class="table_wrap" id="tbWrap"></div>
+      </div>
+    </div>
+    <div class="box-footer"></div>
+</div>
+</section>
+<script id="tbTpl" type="text/html">
+<% if(list.length){ %>
+<table class="table table-bordered table-striped">
+  <thead>
+  <tr>
+      <td>统计时间</td>
+      <% var v;for(v in fields){ %>
+        <% if(!fields[v]){continue;} %>
+        <td><%=desc(v)%></td>
+      <%}%>
+  </tr>
+  </thead>
+  <tbody>
+    <%for(var i=0,len=list.length;i<len;i++){var item=list[i];%>
+    <tr>
+        <!-- <td><%=dateFormat(item.time_stamp)%>&nbsp;&nbsp;<a href="javascript:;" data-hash="day|<%=item.time_stamp%>">查看详细</a></td> -->
+        <td><%=dateFormat(item.time_stamp)%></td>
+        <% var v;for(v in fields){ %>
+            <% if(!fields[v]){continue;} %>
+            <td><%=item[v]||''%></td>
+        <%}%>
+    </tr>
+    <%}%>
+  </tbody>
+<%}%>
+</table>
+</script>
+<script id="fieldTpl" type="text/html">
+<table>
+    <% var index=0; var p;for(p in item){ %>
+      <%if(p=='time_stamp'){continue;}%>
+      <% if(index%4==0){ %>
+          <tr>
+      <% } %>
+      <td>
+        <input type="checkbox" name="<%=p%>" id="<%=p%>">
+        <label for="<%=p%>"><%=desc(p)%></label>
+      </td>
+      <% if(index%4==3){ %>
+          </tr>
+      <% } %>
+    <% index++;} %>
+</table>
+</script>
+{% endblock %}

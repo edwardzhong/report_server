@@ -1,0 +1,24 @@
+{
+    "appenders": [
+        {
+            "type": "console",
+            "category": "console"
+        },
+        {
+          "type": "file",
+          "level": "INFO",
+          "filename": "logs/app.log",
+          "maxLogSize": 51200000,
+          "backups": 20
+        },
+        {
+          "type": "logLevelFilter",
+          "level": "ERROR",
+          "appender": {
+            "type": "file",
+            "filename": "logs/errors.log"
+          }
+        }
+    ],
+    "replaceConsole": true
+}

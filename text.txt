@@ -1,0 +1,25 @@
+
+堡垒机
+ssh wuchunfeng@192.168.146.95
+wuchunfeng
+
+跳板机
+ssh boss@10.191.62.233
+Boss@idc
+
+DEV
+ssh boss@192.168.145.30
+
+GAMMA
+ssh boss@10.191.62.231
+
+web服务
+http://10.191.62.231:1313/
+目录
+/export/wxsq/wxsq_rep_sys
+
+活动：0,
+秒杀:1,
+订单：2；
+
+http://localhost:8080/?port=5858
