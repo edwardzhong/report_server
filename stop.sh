@@ -1,2 +1,3 @@
+export PATH=$PATH:/usr/local/node/bin/:/usr/local/node/usr/local/lib/node_modules/forever/bin/
 echo 'stop rep_sys:'
-/usr/local/node/usr/local/lib/node_modules/forever/bin/forever stop bin/start.js
+forever stop bin/start.js

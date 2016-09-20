@@ -81,7 +81,7 @@ function getMergeData(sceneDatas,chenDuDatas,scene){
 		}
 		item.dan_hit_percent=Math.round((item.dan_check_H_total/item.dan_check_total)*10000)/100;
 		item.dan_user_percent=Math.round((item.dan_user_H_total/item.dan_user_total)*10000)/100;
-		item.bc_percent=Math.round(item.dan_hit_me_H/item.dan_check_H_total*10000)/100;
+		item.bc_percent=Math.round(item.dan_hit_me_H_user/item.dan_user_H_total*10000)/100;
 	});
 	return mData;
 }

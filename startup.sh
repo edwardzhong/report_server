@@ -2,4 +2,4 @@ export PATH=$PATH:/usr/local/node/bin/:/usr/local/node/usr/local/lib/node_module
 echo 'stop rep_sys:'
 forever stop bin/start.js
 echo 'start rep_sys:'
-/usr/local/node/usr/local/lib/node_modules/forever/bin/forever start bin/start.js
+forever start bin/start.js

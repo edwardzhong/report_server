@@ -11,11 +11,12 @@
         'bc_percent': '补偿率',
         'dan_hit_all_H': '交叉命中次数',
         'dan_hit_all_H_user': '交叉命中用户数',
-        'dan_hit_chendu': '命中成都次数',
+        'dan_hit_chendu_H': '命中成都次数',
         'dan_hit_chendu_H_user': '命中成都用户数',
         'dan_hit_me_H': '命中我们次数',
         'dan_hit_me_H_user': '命中我们用户数'
     };
+
     //是否显示的字段
     var _fields = {};
     //数据

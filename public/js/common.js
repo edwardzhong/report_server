@@ -67,7 +67,7 @@
       });
 
       for(var v in seriesObj){
-        if(v==opt.x){continue;}
+        if(v==opt.x||v=='scene_id'||v.indexOf('_percent')>-1){continue;}
         series.push({
           name:opt.dataDesc[v],
           data:seriesObj[v] 

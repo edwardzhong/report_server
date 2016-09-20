@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 {% block css %}
 <style>
-
+.table_wrap table>thead>tr>td:nth-child(1),.table_wrap table>tbody>tr>td:nth-child(1){width: 100px;}
 </style>
 {% endblock %}
 {% block js %}
@@ -162,7 +162,7 @@
       <% } %>
       <td>
         <input type="checkbox" name="<%=p%>" id="<%=p%>">
-        <label for="<%=p%>"><%=desc(p)%></label>
+        <label for="<%=p%>"><%=desc(p)%>&nbsp;</label>
       </td>
       <% if(index%6==5){ %>
           </tr>

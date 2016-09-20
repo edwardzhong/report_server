@@ -61,23 +61,22 @@
                 _fields = {};
                 _data = data.data;
                 _data.forEach(function(item, i) {
-                    var index =0;
                     for (var v in item) {
-                        if (v == 'time_stamp') {
-                            continue;
-                        }
+                        if(v=='time_stamp'){continue;}
                         if (v in _dataDesc) {
-                            _fields[v] = index>3?false:true;
-                            index++;
-                            continue;
+                            _fields[v]=false;
+                            continue; 
                         }
-                        // if(v.search('hit_times_')>-1||v.search('hit_users_')>-1){
-                        //   _fields[v]=true;
-                        //   continue;
-                        // }
                         delete item[v];
                     }
                 });
+                var index =0;
+                for(var v in _fields){
+                    if(index>3){break;}
+                    _fields[v] = true;
+                    index++;
+                }
+
                 var $box = $('#chartBox');
                 if ($box.length && $box.css('display') == 'block') {
                     showChart();
@@ -132,11 +131,12 @@
      */
     function setCheckBoxStyle() {
         var $cbs = $('input[type="checkbox"]');
+        if(!$cbs.length){return;}
         $cbs.iCheck({
             checkboxClass: 'icheckbox_square-blue',
             radioClass: 'iradio_square-blue'
         });
-        // $cbs.iCheck('check');
+
         $cbs.each(function(i,item){
             if(i>3){return false;}
             $(item).iCheck('check');
